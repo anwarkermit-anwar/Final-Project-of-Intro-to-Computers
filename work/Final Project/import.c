@@ -26,6 +26,11 @@ void add_a_new_product(
         *id_p=id;
         name=(char**)realloc(name,*plen*sizeof(char*));
         *name_p=name;
+        for(int i=*len;i<*plen;i++){
+            *(price+i)=0;
+            *(unit_cost+i)=0;
+            *(count+i)=0;
+        }
     }
     char *p0,*p1,*p2,*p3,*p4;
     p0=buffer;

@@ -5,7 +5,7 @@
 #include "recording_system.h"
 #include "small_operations.h"
 
-const int Is_printing_current_sta=1;
+const int Is_printing_current_sta=0;
 
 char s[1000],status[9]="BYE";
 int *unit_cost,*price,*count;
@@ -39,6 +39,9 @@ void initialization(){
     name=(char**)calloc(1,sizeof(char*));
     len=0;
     plen=1;
+    *price=0;
+    *unit_cost=0;
+    *count=0;
 }
 
 void free_all(){
@@ -73,6 +76,12 @@ int main(){
             print_current_commodity_status();
             printf("OK %s\n",s);
         }
+        if(strncmp(s,"QUERY ",6)==0){
+            if(query(s+6,price,unit_cost,count,id,name,len)){
+                strcpy(status,"Error!!!");
+                break;
+            }
+        }
     }
     printf("%s\n",status);
     free_all();
@@ -81,5 +90,8 @@ int main(){
 IMPORT inventory.txt
 PRICE P001 300
 PRICE P002 250
+QUERY P002
+QUERY P005
+QUERY P001
 QUIT
 */
