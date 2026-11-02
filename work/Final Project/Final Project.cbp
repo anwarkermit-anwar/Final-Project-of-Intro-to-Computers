@@ -42,6 +42,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="recording_system.h" />
+		<Unit filename="small_operations.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="small_operations.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
