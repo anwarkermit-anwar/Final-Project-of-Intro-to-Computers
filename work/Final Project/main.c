@@ -4,6 +4,7 @@
 #include "import.h"
 #include "recording_system.h"
 #include "small_operations.h"
+#include "promotion.h"
 
 const int Is_printing_current_sta=0;
 
@@ -11,7 +12,7 @@ char s[1000],status[9]="BYE";
 int *unit_cost,*price,*count;
 char **id,**name;
 int len=1,plen=0;
-
+struct promotion promo;
 
 void print_current_commodity_status(){
     if(!Is_printing_current_sta) return;
@@ -42,6 +43,8 @@ void initialization(){
     *price=0;
     *unit_cost=0;
     *count=0;
+    promo.qty_condition=0;
+    promo.percentage=0;
 }
 
 void free_all(){
@@ -82,6 +85,13 @@ int main(){
                 break;
             }
         }
+        if(strncmp(s,"PROMO ",6)==0){
+            if(set_promotion(s+6,&promo)){
+                strcpy(status,"Error!!!");
+                break;
+            }
+            printf("OK PROMO\n");
+        }
     }
     printf("%s\n",status);
     free_all();
@@ -90,8 +100,7 @@ int main(){
 IMPORT inventory.txt
 PRICE P001 300
 PRICE P002 250
+PROMO P001 3 P002 80
 QUERY P002
-QUERY P005
-QUERY P001
 QUIT
 */

@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include "promotion.h"
 
 int find_id_to_index(char *target,char **id,int len,int *found,int *found_len){
     for(int i=0;i<len;i++){
@@ -98,5 +99,41 @@ int query(
         printf("cost=%d\n",*(unit_cost+ind));
     }
     free(found);
+    return 0;
+}
+//Set promotion
+int set_promotion(char *buffer,struct promotion *promo_p){
+    int len[4]={0},st[4]={0},ind=0;
+    for(char *p=buffer;*p!='\0' && *p!='\n' && ind<4;p++){
+        if(*p==' '){
+            ind++;
+            st[ind]=(p-buffer+1);
+        }
+        else len[ind]++;
+    }
+    //id_a
+    promo_p->id_a=(char*)calloc(len[0],sizeof(char));
+    for(int i=0;i<len[0];i++){
+        *(promo_p->id_a+i)=*(buffer+st[0]+i);
+    }
+    //qty_condition
+    int condi=0;
+    for(int i=0;i<len[1];i++){
+        condi*=10;
+        condi+=*(buffer+st[1]+i)-'0';
+    }
+    promo_p->qty_condition=condi;
+    //id_b
+    promo_p->id_b=(char*)calloc(len[2],sizeof(char));
+    for(int i=0;i<len[2];i++){
+        *(promo_p->id_b+i)=*(buffer+st[2]+i);
+    }
+    //percentage
+    int per=0;
+    for(int i=0;i<len[3];i++){
+        per*=10;
+        per+=*(buffer+st[3]+i)-'0';
+    }
+    promo_p->percentage=per;
     return 0;
 }
