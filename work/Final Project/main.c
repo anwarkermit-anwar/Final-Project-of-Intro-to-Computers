@@ -5,61 +5,54 @@
 #include "recording_system.h"
 #include "small_operations.h"
 #include "promotion.h"
+#include "product_manager.h"
 
-const int Is_printing_current_sta=0;
 
+const int Is_printing_current_sta=1;
+const int buffering=0;
+
+product *first_product=NULL,*last_product=NULL;
 char s[1000],status[9]="BYE";
-int *unit_cost,*price,*count;
-char **id,**name;
-int len=1,plen=0;
+int len=1,next_batch=1;
 struct promotion promo;
 
 void print_current_commodity_status(){
     if(!Is_printing_current_sta) return;
     printf("Commodity List:\n");
-    printf("%6s %15s %10s %10s %10s\n","ID","Name","Count","Unit Cost","Price");
-    for(int i=0;i<len;i++){
-        printf("%6s %15s %10d %10d %10d\n",*(id+i),*(name+i),*(count+i),*(unit_cost+i),*(price+i));
+    printf("%6s %6s %15s %10s %10s %10s\n","Batch","ID","Name","Count","Unit Cost","Price");
+    //printf("head batch=%d\n",first_product->batch);
+    product *p=first_product;
+    while(p!=NULL){
+        printf("%6d %6s %15s %10d %10d %10d\n",p->batch,p->id,p->name,p->qty,p->unit_cost,p->price);
+        p=p->next;
     }
     printf("--------\n");
 }
 
 int call_import(){
-    int batches=import(s+7,&price,&unit_cost,&count,&id,&name,&len,&plen);
+    int batches=import(s+7,&first_product,&last_product,&len,&next_batch);
     if(batches==-1) return 1;
+
     print_current_commodity_status();
     printf("OK IMPORT %d\n",batches);
     return 0;
 }
 
 void initialization(){
-    price=(int*)calloc(1,sizeof(int));
-    unit_cost=(int*)calloc(1,sizeof(int));
-    count=(int*)calloc(1,sizeof(int));
-    id=(char**)calloc(1,sizeof(char*));
-    name=(char**)calloc(1,sizeof(char*));
     len=0;
-    plen=1;
-    *price=0;
-    *unit_cost=0;
-    *count=0;
     promo.qty_condition=0;
     promo.percentage=0;
 }
 
 void free_all(){
-    for(int i=0;i<len;i++){
-        free(*(id+i));
-        free(*(name+i));
-    }
-    free(id);
-    free(name);
-    free(unit_cost);
-    free(count);
-    free(price);
+
 }
 
 int main(){
+    char output_buffer[100001];
+    if(buffering){
+        setvbuf(stdout,output_buffer,_IOFBF,sizeof(output_buffer));
+    }
     initialization();
     while(fgets(s,900,stdin)!=NULL){
         s[strcspn(s,"\n")]='\0';
@@ -71,16 +64,15 @@ int main(){
             }
         }
         if(strncmp(s,"PRICE ",6)==0){
-            if(call_set_price(s,price,id,len)){
+            if(call_set_price(s,first_product,len)){
                 strcpy(status,"Error!!!");
-                print_current_commodity_status();
                 break;
             }
             print_current_commodity_status();
             printf("OK %s\n",s);
         }
         if(strncmp(s,"QUERY ",6)==0){
-            if(query(s+6,price,unit_cost,count,id,name,len)){
+            if(query(s+6,first_product,len)){
                 strcpy(status,"Error!!!");
                 break;
             }
@@ -102,5 +94,7 @@ PRICE P001 300
 PRICE P002 250
 PROMO P001 3 P002 80
 QUERY P002
+QUERY P001
+QUERY P003
 QUIT
 */

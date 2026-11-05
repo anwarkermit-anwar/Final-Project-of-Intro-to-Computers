@@ -31,6 +31,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="global_variables.h" />
 		<Unit filename="import.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -39,6 +40,11 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="main.h" />
+		<Unit filename="product.h" />
+		<Unit filename="product_manager.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="product_manager.h" />
 		<Unit filename="promotion.h" />
 		<Unit filename="recording_system.c">
 			<Option compilerVar="CC" />

@@ -12,5 +12,5 @@ int save(char* saving_file){
     return 0;
 }
 int load(char* loading_file){
-
+    return 0;
 }
