@@ -98,7 +98,7 @@ int query(
 }
 //Set promotion
 int set_promotion(char *buffer,struct promotion *promo_p){
-    int len[4]={0},st[4]={0},ind=0;
+    int len[5]={0},st[5]={0},ind=0;
     for(char *p=buffer;*p!='\0' && *p!='\n' && ind<4;p++){
         if(*p==' '){
             ind++;

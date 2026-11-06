@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "product.h"
+#define Max_cart_count 10
 
 void push_a_product(product **head_p,product **tail_p,char *id,char *name,int qty,int uct,int batch,int *len){
     if((*head_p==NULL) && (*tail_p==NULL)){
@@ -36,4 +37,88 @@ void delete_a_product(product *this_product,product **head_p,product **tail_p,in
     free(this_product);
     this_product=NULL;
     (*len)--;
+}
+
+int add_a_new_cart(char *id,cart *current_cart){
+    int open_cart_successfully=0;
+    for(int i=0;i<Max_cart_count;i++){
+        if(current_cart[i].id==NULL){
+            current_cart[i].id=(char*)calloc(strlen(id),sizeof(char));
+            strcpy(current_cart[i].id,id);
+            open_cart_successfully=1;
+            break;
+        }
+    }
+    return !open_cart_successfully;
+}
+
+int delete_a_cart(char *id,cart *current_cart){
+    int delete_cart_successfully=0;
+    for(int i=0;i<Max_cart_count;i++){
+        if(strcmp(id,current_cart[i].id)==0){
+            free(current_cart[i].id);
+            current_cart[i].id=NULL;
+            product *p=current_cart[i].first_product;
+            while(p!=NULL){
+                product *next=p->next;
+                free(p);
+                p=next;
+            }
+            current_cart[i].first_product=NULL;
+            current_cart[i].last_product=NULL;
+            current_cart[i].product_list_len=0;
+            delete_cart_successfully=1;
+            break;
+        }
+    }
+    return !delete_cart_successfully;
+}
+
+int find_cart_id(char *cid,cart *current_cart){
+    for(int i=0;i<Max_cart_count;i++){
+        if(strcmp(cid,current_cart[i].id)==0) return i;
+    }
+    return -1;
+}
+
+int add_product_to_a_cart(char *buffer,cart *current_cart){
+    int st[4]={0},len[4]={0},ind=0;
+    st[0]=0;
+    for(char *p=buffer;*p!='\0' && *p!='\n' && ind<3;p++){
+        if(*p==' '){
+            ind++;
+            st[ind]=(p-buffer+1);
+        }
+        else{
+            len[ind]++;
+        }
+    }
+    char *cid=(char*)calloc(len[0],sizeof(char));
+    for(int i=0;i<len[0];i++) *(cid+i)=*(buffer+i+st[0]);
+    char *pid=(char*)calloc(len[1],sizeof(char));
+    for(int i=0;i<len[1];i++) *(pid+i)=*(buffer+i+st[1]);;
+    int qty=0;
+    for(int i=0;i<len[2];i++){
+        qty*=10;
+        qty+=*(buffer+i+st[2])-'0';
+    }
+    int i=find_cart_id(cid,current_cart);
+    if(i==-1){
+        printf("Cart %s not found!!!\n",cid);
+        return 1;
+    }
+    int add_success=0;
+    product *p=current_cart[i].first_product;
+    while(p!=NULL){
+        if(strcmp(p->id,pid)==0){
+            p->qty+=qty;
+            add_success=1;
+            break;
+        }
+        p=p->next;
+    }
+    if(!add_success){
+        push_a_product(&(current_cart[i].first_product),&(current_cart[i].last_product),pid,NULL,qty,0,0,&(current_cart[i].product_list_len));
+    }
+    return 0;
 }
