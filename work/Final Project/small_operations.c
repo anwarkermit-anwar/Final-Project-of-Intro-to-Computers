@@ -14,7 +14,6 @@ int find_id_to_index(char *target,product *first_product,product **found,int *fo
         p=p->next;
     }
     if(*found_len>0) return 0;
-    printf("Cannot find corresponding index!!!!\n");
     return -1;
 }
 //set price
@@ -23,7 +22,7 @@ int set_price(char *product_id,int product_price,product *first_product,int len)
     int found_len=0;
     int res=find_id_to_index(product_id,first_product,found,&found_len);
     if(res==-1) {
-        printf("product ID not found!!!\n");
+        printf("ERR NO_PRODUCT\n");
         free(found);
         return 1;
     }
@@ -70,7 +69,7 @@ int query(
     int found_len=0;
     int res=find_id_to_index(product_id,first_product,found,&found_len);
     if(res==-1) {
-        printf("product ID not found!!!\n");
+        printf("ERR NO_PRODUCT\n");
         free(found);
         return 1;
     }

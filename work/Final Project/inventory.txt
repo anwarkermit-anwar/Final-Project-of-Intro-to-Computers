@@ -1,5 +1,3 @@
-P002###Blue Mug@@@2&&&6
-P001###Coffee Beans@@@5&&&4
-P003###Chicken@@@10&&&72
-P005###Cofffee Beans@@@511&&&4000
-P002###Blue Mug@@@5&&&10
+P001###Coffee Beans@@@2&&&100
+P001###Coffee Beans@@@4&&&120
+P002###Mug@@@4&&&150

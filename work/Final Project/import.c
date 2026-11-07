@@ -40,7 +40,6 @@ void add_a_new_product(
         uct+=*p3-'0';
     }
     push_a_product(first_product,last_product,pid,pname,qty,uct,*next_batch,len);
-
     (*next_batch)++;
     //
     (*len)++;
@@ -55,7 +54,7 @@ int import(
 ){
     FILE *file=fopen(file_name,"r");
     if(file==NULL){
-        printf("file open failed!\n");
+        printf("ERR FILE_OPEN\n");
         return -1;
     }
     char buffer[100],batches=0;

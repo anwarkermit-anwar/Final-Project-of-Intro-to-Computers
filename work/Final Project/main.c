@@ -49,7 +49,7 @@ void print_current_cart_status(){
 
 int call_import(){
     int batches=import(s+7,&first_product,&last_product,&len,&next_batch);
-    if(batches==-1) return 1;
+    if(batches==-1) return 0;
 
     print_current_commodity_status();
     printf("OK IMPORT %d\n",batches);
@@ -77,24 +77,14 @@ int main(){
         s[strcspn(s,"\n")]='\0';
         if(strcmp(s,"QUIT")==0) break;
         if(strncmp(s,"IMPORT ",7)==0){
-            if(call_import()) {
-                strcpy(status,"Error!!!");
-                break;
-            }
+            call_import();
         }
         if(strncmp(s,"PRICE ",6)==0){
-            if(call_set_price(s,first_product,len)){
-                strcpy(status,"Error!!!");
-                break;
-            }
+            if(!call_set_price(s,first_product,len)) printf("OK %s\n",s);
             print_current_commodity_status();
-            printf("OK %s\n",s);
         }
         if(strncmp(s,"QUERY ",6)==0){
-            if(query(s+6,first_product,len)){
-                strcpy(status,"Error!!!");
-                break;
-            }
+            query(s+6,first_product,len);
         }
         if(strncmp(s,"PROMO ",6)==0){
             if(set_promotion(s+6,&promo)){
@@ -104,12 +94,7 @@ int main(){
             printf("OK PROMO\n");
         }
         if(strncmp(s,"CART ",5)==0){
-            if(add_a_new_cart(s+5,current_cart)){
-                strcpy(status,"Error!!!");
-                print_current_cart_status();
-                break;
-            }
-            printf("OK %s\n",s);
+            if(!add_a_new_cart(s+5,current_cart)) printf("OK %s\n",s);
             print_current_cart_status();
         }
         /*if(strncmp(s,"DCART ",6)==0){
@@ -122,12 +107,7 @@ int main(){
             print_current_cart_status();
         }*/
         if(strncmp(s,"ADD ",4)==0){
-            if(add_product_to_a_cart(s+4,current_cart)){
-                strcpy(status,"Error!!!");
-                print_current_cart_status();
-                break;
-            }
-            printf("OK %s\n",s);
+            if(!add_product_to_a_cart(s+4,current_cart,first_product)) printf("OK %s\n",s);
             print_current_cart_status();
         }
     }
@@ -139,15 +119,8 @@ IMPORT inventory.txt
 PRICE P001 300
 PRICE P002 250
 PROMO P001 3 P002 80
-CART C001
-CART C002
-CART C003
-ADD C001 P001 3
-ADD C001 P002 5
-ADD C001 P001 3
-ADD C002 P002 100
-DCART C001
-CART C004
-QUERY P002
+CART C1
+ADD C1 P001 3
+ADD C1 P002 1
 QUIT
 */

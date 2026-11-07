@@ -76,12 +76,21 @@ int delete_a_cart(char *id,cart *current_cart){
 
 int find_cart_id(char *cid,cart *current_cart){
     for(int i=0;i<Max_cart_count;i++){
-        if(strcmp(cid,current_cart[i].id)==0) return i;
+        if(current_cart[i].id!=NULL && strcmp(cid,current_cart[i].id)==0) return i;
     }
     return -1;
 }
 
-int add_product_to_a_cart(char *buffer,cart *current_cart){
+int check_product_id_exist(char *id,product *first_product){
+    product *p=first_product;
+    while(p!=NULL){
+        if(strcmp(id,p->id)==0) return 1;
+        p=p->next;
+    }
+    return 0;
+}
+
+int add_product_to_a_cart(char *buffer,cart *current_cart,product *first_product_in_list){
     int st[4]={0},len[4]={0},ind=0;
     st[0]=0;
     for(char *p=buffer;*p!='\0' && *p!='\n' && ind<3;p++){
@@ -104,7 +113,11 @@ int add_product_to_a_cart(char *buffer,cart *current_cart){
     }
     int i=find_cart_id(cid,current_cart);
     if(i==-1){
-        printf("Cart %s not found!!!\n",cid);
+        printf("ERR NO_CART\n");
+        return 1;
+    }
+    if(!check_product_id_exist(pid,first_product_in_list)){
+        printf("ERR NO_PRODUCT\n");
         return 1;
     }
     int add_success=0;
