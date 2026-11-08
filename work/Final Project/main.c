@@ -10,7 +10,7 @@
 
 
 const int Is_printing_current_sta=0;
-const int Is_printing_current_cart_sta=0;
+const int Is_printing_current_cart_sta=1;
 const int buffering=0;
 
 product *first_product=NULL,*last_product=NULL;
@@ -119,8 +119,8 @@ IMPORT inventory.txt
 PRICE P001 300
 PRICE P002 250
 PROMO P001 3 P002 80
-CART C1
-ADD C1 P001 3
-ADD C1 P002 1
+CART C001
+ADD C001 P002 3
+ADD C001 P001 1
 QUIT
 */

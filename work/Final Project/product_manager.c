@@ -4,6 +4,18 @@
 #include "product.h"
 #define Max_cart_count 10
 
+void Print_current_commodity_status(product *first_product){
+    printf("Commodity List:\n");
+    printf("%6s %6s %15s %10s %10s %10s\n","Batch","ID","Name","Count","Unit Cost","Price");
+    //printf("head batch=%d\n",first_product->batch);
+    product *p=first_product;
+    while(p!=NULL){
+        printf("%6d %6s %15s %10d %10d %10d\n",p->batch,p->id,p->name,p->qty,p->unit_cost,p->price);
+        p=p->next;
+    }
+    printf("--------\n");
+}
+
 void push_a_product(product **head_p,product **tail_p,char *id,char *name,int qty,int uct,int batch,int *len){
     if((*head_p==NULL) && (*tail_p==NULL)){
         product *new_product=(product*)malloc(sizeof(product));
@@ -12,10 +24,27 @@ void push_a_product(product **head_p,product **tail_p,char *id,char *name,int qt
         *tail_p=new_product;
     }
     else{
+        product *p=*head_p;
+        while(p!=NULL && strcmp(id,p->id)>=0) p=p->next;
         product *new_product=(product*)malloc(sizeof(product));
-        *new_product=(product){id,name,0,uct,qty,batch,*tail_p,NULL};
-        (*tail_p)->next=new_product;
-        *tail_p=new_product;
+        *new_product=(product){id,name,0,uct,qty,batch,NULL,NULL};
+        if(p==*head_p){
+            (*head_p)->last=new_product;
+            new_product->next=*head_p;
+            *head_p=new_product;
+        }
+        else if(p==NULL){
+            (*tail_p)->next=new_product;
+            new_product->last=*tail_p;
+            *tail_p=new_product;
+        }
+        else{
+            product *last=p->last;
+            last->next=new_product;
+            p->last=new_product;
+            new_product->last=last;
+            new_product->next=p;
+        }
     }
     (*len)++;
 }
