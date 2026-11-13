@@ -31,6 +31,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="checkout.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="checkout.h" />
 		<Unit filename="global_variables.h" />
 		<Unit filename="import.c">
 			<Option compilerVar="CC" />

@@ -6,6 +6,7 @@
 #include "small_operations.h"
 #include "promotion.h"
 #include "product_manager.h"
+#include "checkout.h"
 #define Max_cart_count 10
 
 
@@ -16,6 +17,7 @@ const int buffering=0;
 product *first_product=NULL,*last_product=NULL;
 char s[1000],status[9]="BYE";
 int len=1,next_batch=1;
+int acc_cost,acc_gift_cost,acc_revenue;
 struct promotion promo;
 cart current_cart[Max_cart_count];
 
@@ -97,18 +99,12 @@ int main(){
             if(!add_a_new_cart(s+5,current_cart)) printf("OK %s\n",s);
             print_current_cart_status();
         }
-        /*if(strncmp(s,"DCART ",6)==0){
-            if(delete_a_cart(s+6,current_cart)){
-                strcpy(status,"Error!!!");
-                print_current_cart_status();
-                break;
-            }
-            printf("OK %s\n",s);
-            print_current_cart_status();
-        }*/
         if(strncmp(s,"ADD ",4)==0){
             if(!add_product_to_a_cart(s+4,current_cart,first_product)) printf("OK %s\n",s);
             print_current_cart_status();
+        }
+        if(strncmp(s,"CHECKOUT ",9)==0){
+            check_out(s+9,current_cart,&first_product,&last_product,&len,promo,&acc_revenue,&acc_cost,&acc_gift_cost);
         }
     }
     printf("%s\n",status);
@@ -117,10 +113,10 @@ int main(){
 /*
 IMPORT inventory.txt
 PRICE P001 300
-PRICE P002 250
 PROMO P001 3 P002 80
 CART C001
 ADD C001 P002 3
 ADD C001 P001 1
+CHECKOUT C002
 QUIT
 */
