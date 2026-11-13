@@ -8,4 +8,5 @@ int query(
     int len
 );
 int set_promotion(char *buffer,struct promotion *promo_p);
+int report(product *first_product,int revenue,int cost,int gift_cost);
 #endif // SMALL_OPERATIONS_H

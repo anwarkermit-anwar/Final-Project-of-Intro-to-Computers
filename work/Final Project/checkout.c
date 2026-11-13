@@ -72,17 +72,19 @@ void take_gift(int *gift_count,product **first_product_p,product **last_product_
         *take_count=-1;
         return;
     }
+    //printf("gift:%s qty=%d,gift_count=%d\n",min_profit_product->id,min_profit_product->qty,*gift_count);
     //take gift
-    if(*gift_count<=min_profit_product->qty){
+    if(*gift_count<min_profit_product->qty){
         *take_count=*gift_count;
+        min_profit_product->qty-=*gift_count;
         (*gift_count)=0;
         *gift=*min_profit_product;
-        delete_a_product(min_profit_product,first_product_p,last_product_p,len);
     }
     else{
         *take_count=min_profit_product->qty;
         (*gift_count)-=*take_count;
         *gift=*min_profit_product;
+        delete_a_product(min_profit_product,first_product_p,last_product_p,len);
     }
     //printf("gift count=%d,take count=%d\n",*gift_count,*take_count);
 }
@@ -118,7 +120,7 @@ int check_out(
             printf("ERR INSUFFICIENT %s\n",p_inCart->id);
             return 0;
         }
-        if(promo.percentage==0 && strcmp(promo.id_a,p_inCart->id)==0){
+        if(promo.percentage!=0 && strcmp(promo.id_a,p_inCart->id)==0){
             if(p_inCart->qty>=promo.qty_condition) have_promotion=1;
         }
         p_inCart=p_inCart->next;
@@ -135,7 +137,7 @@ int check_out(
         }
         int subtotal=(p_inCart->qty*price*promo_percentage+50)/100;
         if(promo_percentage==100) printf("  %s x%d @%d = %d\n",p_inCart->id,p_inCart->qty,price,subtotal);
-        else printf("  %s x%d @%d *%d% = %d\n",p_inCart->id,p_inCart->qty,price,promo_percentage,subtotal);
+        else printf("  %s x%d @%d *%d%% = %d\n",p_inCart->id,p_inCart->qty,price,promo_percentage,subtotal);
         initial_cost+=uct*p_inCart->qty;
         total+=subtotal;
         p_inCart=p_inCart->next;

@@ -84,7 +84,7 @@ int add_a_new_cart(char *id,cart *current_cart){
 int delete_a_cart(char *id,cart *current_cart){
     int delete_cart_successfully=0;
     for(int i=0;i<Max_cart_count;i++){
-        if(strcmp(id,current_cart[i].id)==0){
+        if(current_cart[i].id!=NULL && strcmp(id,current_cart[i].id)==0){
             free(current_cart[i].id);
             current_cart[i].id=NULL;
             product *p=current_cart[i].first_product;

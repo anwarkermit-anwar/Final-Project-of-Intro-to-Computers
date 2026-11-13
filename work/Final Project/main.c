@@ -11,7 +11,7 @@
 
 
 const int Is_printing_current_sta=0;
-const int Is_printing_current_cart_sta=1;
+const int Is_printing_current_cart_sta=0;
 const int buffering=0;
 
 product *first_product=NULL,*last_product=NULL;
@@ -66,7 +66,9 @@ void initialization(){
 }
 
 void free_all(){
-
+    while(first_product!=NULL){
+        delete_a_product(first_product,&first_product,&last_product,&len);
+    }
 }
 
 int main(){
@@ -105,6 +107,11 @@ int main(){
         }
         if(strncmp(s,"CHECKOUT ",9)==0){
             check_out(s+9,current_cart,&first_product,&last_product,&len,promo,&acc_revenue,&acc_cost,&acc_gift_cost);
+            delete_a_cart(s+9,current_cart);
+            print_current_cart_status();
+        }
+        if(strncmp(s,"REPORT",6)==0){
+            report(first_product,acc_revenue,acc_cost,acc_gift_cost);
         }
     }
     printf("%s\n",status);
@@ -112,11 +119,18 @@ int main(){
 }
 /*
 IMPORT inventory.txt
-PRICE P001 300
-PROMO P001 3 P002 80
+PRICE P001 350
+PRICE P002 300
+PROMO P002 3 P001 80
 CART C001
+CART C002
 ADD C001 P002 3
 ADD C001 P001 1
+ADD C002 P001 4
+ADD C002 P002 1
+CHECKOUT C001
 CHECKOUT C002
+CART C003
+REPORT
 QUIT
 */
