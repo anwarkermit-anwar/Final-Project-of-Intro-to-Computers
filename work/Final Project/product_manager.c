@@ -16,10 +16,10 @@ void Print_current_commodity_status(product *first_product){
     printf("--------\n");
 }
 
-void push_a_product(product **head_p,product **tail_p,char *id,char *name,int qty,int uct,int batch,int *len){
+void push_a_product(product **head_p,product **tail_p,char *id,char *name,int qty,int uct,int batch,int price,int *len){
     if((*head_p==NULL) && (*tail_p==NULL)){
         product *new_product=(product*)malloc(sizeof(product));
-        *new_product=(product){id,name,0,uct,qty,batch,*tail_p,NULL};
+        *new_product=(product){id,name,price,uct,qty,batch,*tail_p,NULL};
         *head_p=new_product;
         *tail_p=new_product;
     }
@@ -27,7 +27,7 @@ void push_a_product(product **head_p,product **tail_p,char *id,char *name,int qt
         product *p=*head_p;
         while(p!=NULL && strcmp(id,p->id)>=0) p=p->next;
         product *new_product=(product*)malloc(sizeof(product));
-        *new_product=(product){id,name,0,uct,qty,batch,NULL,NULL};
+        *new_product=(product){id,name,price,uct,qty,batch,NULL,NULL};
         if(p==*head_p){
             (*head_p)->last=new_product;
             new_product->next=*head_p;
@@ -160,7 +160,7 @@ int add_product_to_a_cart(char *buffer,cart *current_cart,product *first_product
         p=p->next;
     }
     if(!add_success){
-        push_a_product(&(current_cart[i].first_product),&(current_cart[i].last_product),pid,NULL,qty,0,0,&(current_cart[i].product_list_len));
+        push_a_product(&(current_cart[i].first_product),&(current_cart[i].last_product),pid,NULL,qty,0,0,0,&(current_cart[i].product_list_len));
     }
     return 0;
 }

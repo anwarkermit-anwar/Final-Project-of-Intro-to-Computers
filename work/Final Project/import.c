@@ -39,7 +39,7 @@ void add_a_new_product(
         uct*=10;
         uct+=*p3-'0';
     }
-    push_a_product(first_product,last_product,pid,pname,qty,uct,*next_batch,len);
+    push_a_product(first_product,last_product,pid,pname,qty,uct,*next_batch,0,len);
     (*next_batch)++;
     //
     (*len)++;

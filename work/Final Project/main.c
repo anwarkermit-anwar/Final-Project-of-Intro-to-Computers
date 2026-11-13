@@ -113,6 +113,9 @@ int main(){
         if(strncmp(s,"REPORT",6)==0){
             report(first_product,acc_revenue,acc_cost,acc_gift_cost);
         }
+        if(strncmp(s,"SAVE ",5)==0){
+            save(s+5,first_product,promo,acc_revenue,acc_cost,acc_gift_cost,next_batch);
+        }
     }
     printf("%s\n",status);
     free_all();
@@ -132,5 +135,6 @@ CHECKOUT C001
 CHECKOUT C002
 CART C003
 REPORT
+SAVE saving.txt
 QUIT
 */

@@ -49,11 +49,11 @@ void take_gift(int *gift_count,product **first_product_p,product **last_product_
     //printf("take gift\n");
     product *p=*first_product_p,*min_profit_product=*first_product_p;
     while(p!=NULL){
-        if(p!=*first_product_p && strcmp(p->id,p->last->id)==0) {
+        if(p!=*first_product_p && strcmp(p->id,p->last->id)==0 && p->last->qty>0) {
             p=p->next;
             continue;
         }
-        if(p->price==0) {
+        if(p->price==0 || p->qty==0) {
             p=p->next;
             continue;
         }
@@ -84,7 +84,8 @@ void take_gift(int *gift_count,product **first_product_p,product **last_product_
         *take_count=min_profit_product->qty;
         (*gift_count)-=*take_count;
         *gift=*min_profit_product;
-        delete_a_product(min_profit_product,first_product_p,last_product_p,len);
+        min_profit_product->qty=0;
+        //delete_a_product(min_profit_product,first_product_p,last_product_p,len);
     }
     //printf("gift count=%d,take count=%d\n",*gift_count,*take_count);
 }
@@ -145,14 +146,14 @@ int check_out(
     printf("TOTAL %d\n",total);
     printf("COST %d\n",initial_cost);
     //free empty item
-    product *p=*first_product_p;
+    /*product *p=*first_product_p;
     while(p!=NULL){
         product *p_cpy=p;
         p=p->next;
         if(p_cpy->qty==0){
             delete_a_product(p_cpy,first_product_p,last_product_p,len);
         }
-    }
+    }*/
     //take gift
     int gift_count=total/1000,actual_total_gift_taken=0;
     while(gift_count>0){

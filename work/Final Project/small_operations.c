@@ -140,7 +140,7 @@ int report(product *first_product,int revenue,int cost,int gift_cost){
         acc_stock+=p->qty;
         acc_value+=p->unit_cost*p->qty;
         if(p->next==NULL || strcmp(p->next->id,p->id)!=0) {
-            printf("  %s stock=%d value=%d\n",p->id,acc_stock,acc_value);
+            if(acc_stock>0) printf("  %s stock=%d value=%d\n",p->id,acc_stock,acc_value);
             acc_stock=0;
             acc_value=0;
         }
@@ -150,4 +150,5 @@ int report(product *first_product,int revenue,int cost,int gift_cost){
     printf("COGS %d\n",cost);
     printf("GIFTCOST %d\n",gift_cost);
     printf("PROFIT %d\n",revenue-cost-gift_cost);
+    return 0;
 }
