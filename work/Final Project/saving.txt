@@ -4,7 +4,7 @@ P001 350
 Coffee Beans
 P002 300
 Mug
-P003 -1
+P003 100
 Percy
 PROMO 1
 P002 3 P001 80

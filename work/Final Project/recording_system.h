@@ -11,5 +11,16 @@ int save(
     int gift_cost,
     int next_batch
 );
-int load(char* loading_file);
+int load(
+    char* loading_file,
+    product **first_product_p,
+    product **last_product_p,
+    int *len,
+    promotion *promo_p,
+    int *revenue_p,
+    int *cost_p,
+    int *gift_cost_p,
+    int *next_batch_p,
+    cart current_cart[]
+);
 #endif // recording_system

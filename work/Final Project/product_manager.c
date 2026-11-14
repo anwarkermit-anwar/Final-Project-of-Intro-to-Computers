@@ -63,6 +63,8 @@ void delete_a_product(product *this_product,product **head_p,product **tail_p,in
     else if(*tail_p==this_product){
         (*tail_p)=this_product->last;
     }
+    free(this_product->name);
+    free(this_product->id);
     free(this_product);
     this_product=NULL;
     (*len)--;

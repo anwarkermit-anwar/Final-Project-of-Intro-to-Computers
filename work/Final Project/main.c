@@ -116,6 +116,14 @@ int main(){
         if(strncmp(s,"SAVE ",5)==0){
             save(s+5,first_product,promo,acc_revenue,acc_cost,acc_gift_cost,next_batch);
         }
+        if(strncmp(s,"LOAD ",5)==0){
+            if(load(s+5,&first_product,&last_product,&len,&promo,&acc_revenue,&acc_cost,&acc_gift_cost,&next_batch,current_cart)){
+                printf("Unexpected ERROR!\n");
+                break;
+            }
+            print_current_commodity_status();
+            print_current_cart_status();
+        }
     }
     printf("%s\n",status);
     free_all();
@@ -135,6 +143,14 @@ CHECKOUT C001
 CHECKOUT C002
 CART C003
 REPORT
+PRICE P003 100
 SAVE saving.txt
+PRICE P001 300
+LOAD saving.txt
+IMPORT inventory.txt
+CART C004
+ADD C004 P003 20
+CHECKOUT C004
+REPORT
 QUIT
 */

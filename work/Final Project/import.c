@@ -3,6 +3,15 @@
 #include<string.h>
 #include "product_manager.h"
 
+int get_price(char *id,product *first_product){
+    product *p=first_product;
+    while(p!=NULL){
+        if(strcmp(id,p->id)==0) return p->price;
+        p=p->next;
+    }
+    return 0;
+}
+
 void add_a_new_product(
     char* buffer,
     product **first_product,
@@ -39,7 +48,8 @@ void add_a_new_product(
         uct*=10;
         uct+=*p3-'0';
     }
-    push_a_product(first_product,last_product,pid,pname,qty,uct,*next_batch,0,len);
+    int price=get_price(pid,*first_product);
+    push_a_product(first_product,last_product,pid,pname,qty,uct,*next_batch,price,len);
     (*next_batch)++;
     //
     (*len)++;
