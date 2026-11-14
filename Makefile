@@ -13,8 +13,8 @@
 
 CC     = gcc
 CFLAGS = -std=c11 -Wall -Wextra
-SRCS   = main.c store.c
-HDRS   = store.h
+SRCS   = work/FinalProject/main.c work/FinalProject/import.c work/FinalProject/checkout.c work/FinalProject/product_manager.c work/FinalProject/recording_system.c work/FinalProject/small_operations.c
+HDRS   = work/FinalProject/import.h work/FinalProject/checkout.h work/FinalProject/product_manager.h work/FinalProject/recording_system.h work/FinalProject/small_operations.h work/FinalProject/product.h work/FinalProject/promotion.h
 
 inventory: $(SRCS) $(HDRS)
 	$(CC) $(CFLAGS) $(SRCS) -o inventory -lm
